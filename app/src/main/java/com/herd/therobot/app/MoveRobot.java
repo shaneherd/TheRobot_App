@@ -148,15 +148,7 @@ public class MoveRobot extends ActionBarActivity {
                                         }
 
                                         //TODO this part is causing data to only post once regardless of the user moving
-                                        //System.out.println("previousLatitude: " + previousLatitude);
-                                        //System.out.println("previousLongitude: " + previousLongitude);
-                                        //System.out.println("latitude: " + latitude);
-                                        //System.out.println("longitude: " + longitude);
-
-                                        //String theToast = "latitude: " + latitude + "\nlongitude: " + longitude;
-
-                                        //Toast.makeText(MoveRobot.this, theToast, Toast.LENGTH_SHORT).show();
-
+                                        //This needs to be tested with the pi turned on
                                         if (previousLatitude != latitude || previousLongitude != longitude)
                                         {
                                             previousLongitude = longitude;
