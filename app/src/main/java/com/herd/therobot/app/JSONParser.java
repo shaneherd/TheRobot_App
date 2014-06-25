@@ -22,19 +22,16 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class JSONParser {
-
     static InputStream is = null;
     static JSONObject jObj = null;
     static String json = "";
 
     // constructor
     public JSONParser() {
-
     }
 
 
     public JSONObject getJSONFromUrl(final String url) {
-
         // Making HTTP request
         try {
             // Construct the client and the HTTP request.
@@ -47,7 +44,6 @@ public class JSONParser {
             HttpEntity httpEntity = httpResponse.getEntity();
             // Open an inputStream with the data content.
             is = httpEntity.getContent();
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -87,18 +83,13 @@ public class JSONParser {
 
         // Return the JSON Object.
         return jObj;
-
     }
-
 
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public JSONObject makeHttpRequest(String url, String method,
-                                      List<NameValuePair> params) {
-
+    public JSONObject makeHttpRequest(String url, String method, List<NameValuePair> params) {
         // Making HTTP request
         try {
-
             // check for request method
             if(method == "POST"){
                 // request method is POST
@@ -110,7 +101,6 @@ public class JSONParser {
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
                 is = httpEntity.getContent();
-
             }else if(method == "GET"){
                 // request method is GET
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -122,7 +112,6 @@ public class JSONParser {
                 HttpEntity httpEntity = httpResponse.getEntity();
                 is = httpEntity.getContent();
             }
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -132,8 +121,7 @@ public class JSONParser {
         }
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "iso-8859-1"), 8);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -154,6 +142,5 @@ public class JSONParser {
 
         // return JSON String
         return jObj;
-
     }
 }
