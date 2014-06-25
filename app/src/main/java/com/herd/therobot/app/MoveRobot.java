@@ -85,6 +85,7 @@ public class MoveRobot extends ActionBarActivity {
             }
         });
 
+        //create listener for the left button
         left.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -106,6 +107,7 @@ public class MoveRobot extends ActionBarActivity {
             }
         });
 
+        //create listener for the right button
         right.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -127,6 +129,7 @@ public class MoveRobot extends ActionBarActivity {
             }
         });
 
+        //create listener for the back button
         back.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -148,6 +151,7 @@ public class MoveRobot extends ActionBarActivity {
             }
         });
 
+        //create listener for the follow button
         followMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -170,38 +174,42 @@ public class MoveRobot extends ActionBarActivity {
                     TimerTask doAsynchronousTask = new TimerTask() {
                         @Override
                         public void run() {
-                            handler.post(new Runnable() {
-                                public void run() {
-                                    if (!continueRunning) {
-                                        return; // stop when told to stop
-                                    }
-                                    try {
-                                        //create the new gps item
-                                        gps = new GPSTracker(MoveRobot.this);
-                                        if(gps.canGetLocation()){
-                                            //get the current coordinates
-                                            longitude = gps.getLongitude();
-                                            latitude = gps.getLatitude();
-                                        } else {
-                                            gps.showSettingsAlert();
-                                        }
-
-                                        //TODO this part is causing data to only post once regardless of the user moving
-                                        //This needs to be tested with the pi turned on
-
-                                        //compare current coordinates with previous coordinates
-                                        if (previousLatitude != latitude || previousLongitude != longitude)
-                                        {
-                                            //if in a new position,
-                                            //store current location and update previous location to current lovation
-                                            previousLongitude = longitude;
-                                            previousLatitude = latitude;
-                                            Follow follow = new Follow(longitude, latitude);
-                                            follow.execute();
-                                        }
-                                    } catch (Exception e) { }
+                        handler.post(new Runnable() {
+                            public void run() {
+                            if (!continueRunning) {
+                                return; // stop when told to stop
+                            }
+                            try {
+                                //create the new gps item
+                                gps = new GPSTracker(MoveRobot.this);
+                                if(gps.canGetLocation()){
+                                    //get the current coordinates
+                                    longitude = gps.getLongitude();
+                                    latitude = gps.getLatitude();
+                                } else {
+                                    gps.showSettingsAlert();
                                 }
-                            });
+
+                                //TODO this part is causing data to only post once regardless of the user moving
+                                //This needs to be tested with the pi turned on
+
+                                //compare current coordinates with previous coordinates
+                                if (previousLatitude != latitude || previousLongitude != longitude)
+                                {
+                                    //if in a new position,
+                                    //update previous location to current location
+                                    previousLongitude = longitude;
+                                    previousLatitude = latitude;
+
+                                    //store current location
+                                    Follow follow = new Follow(longitude, latitude);
+                                    follow.execute();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            }
+                        });
                         }
                     };
                     timer.schedule(doAsynchronousTask, 0, 5000); //execute every 5 seconds
